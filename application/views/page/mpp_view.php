@@ -21,6 +21,12 @@
                         <select id="revFilter" style="border: solid; border-width: 1px; border-radius:10px; width: 7%;padding: 3px">
                             <option value="">All</option>
                         </select>
+                        &nbsp;
+                        <label for="entFilter">Entity</label>
+                        &nbsp;
+                        <select id="entFilter" style="border: solid; border-width: 1px; border-radius:10px; width: 7%;padding: 3px">
+                            <option value="">All</option>
+                        </select>
                     </div>
                     <div class="col-auto">
                         <button onclick="add_mpp()" class="btn btn-primary btn-sm">Create</button>
@@ -88,7 +94,7 @@
                                                 <td><?php echo $dt->modified_by; ?></td>
                                                 <td><?php echo $dt->modified_date; ?></td>
                                                 <td>
-                                                    <span onclick="" class="btn btn-warning btn-sm">EDIT</span>
+                                                    <span type onclick="edit_mpp('<?php echo $dt->year; ?>', '<?php echo $dt->ent; ?>', '<?php echo $dt->rev_no; ?>')" class="btn btn-warning btn-sm">EDIT</span>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -96,30 +102,38 @@
                                 </table>
                                 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
                                 <script>
-                                    function editCompany(company_token) {
-                                        $("#modal_body_edit").html('Loading...');
-                                        $('#modal_title_edit').html('Edit');
-                                        $.ajax({
-                                            url: '<?php echo prefix_url; ?>html/editCompany',
-                                            method: 'post',
-                                            data: {
-                                                company_token: company_token
-                                            },
-                                            dataType: "html",
-                                            success: function(data) {
-                                                $("#modal_body_edit").html(data);
-                                            },
-                                            error: function(data) {
-                                                console.log(JSON.stringify(data));
-                                                errorAlert(data.statusText);
-                                            },
-                                        });
-
-                                    }
-
                                     function add_mpp() {
                                         localStorage.clear();
                                         window.location.href = '<?php echo prefix_url; ?>app/add_mpp';
+                                    }
+
+                                    function edit_mpp(year, ent, rev_no) {
+                                        const url = '<?php echo prefix_url; ?>app/mpp_edit';
+
+                                        const data = {
+                                            edit_year: year,
+                                            edit_ent: ent,
+                                            edit_rev_no: rev_no
+                                        };
+
+                                        console.log(data);
+
+                                        fetch(url, {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json'
+                                                },
+                                                body: JSON.stringify(data)
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                console.log('Success:', data);
+                                                // Add any additional actions you want to perform on success here
+                                            })
+                                            .catch((error) => {
+                                                console.error('Error:', error);
+                                                // Handle errors here
+                                            });
                                     }
 
                                     $(document).ready(function() {
@@ -127,12 +141,17 @@
 
                                         populateDropdown("yearFilter", "year");
                                         populateDropdown("revFilter", "rev_no");
+                                        populateDropdown("entFilter", "ent");
 
                                         $("#yearFilter").change(function() {
                                             filterData();
                                         });
 
                                         $("#revFilter").change(function() {
+                                            filterData();
+                                        });
+
+                                        $("#entFilter").change(function() {
                                             filterData();
                                         });
 
@@ -161,7 +180,8 @@
                                                 row.append("<td>" + dt.hod3_end + "</td>");
                                                 row.append("<td>" + dt.modified_by + "</td>");
                                                 row.append("<td>" + dt.modified_date + "</td>");
-                                                row.append("<td><span onclick='' class='btn btn-warning btn-sm'>EDIT</span></td>");
+                                                row.append("<td><span onclick=\"edit_mpp('" + dt.year + "','" + dt.ent + "','" + dt.rev_no + "')\" class='btn btn-warning btn-sm'>EDIT</span></td>");
+
 
                                                 tableBody.append(row);
                                             });
@@ -182,6 +202,7 @@
                                         function filterData() {
                                             var selectedYear = $("#yearFilter").val();
                                             var selectedRevNo = $("#revFilter").val();
+                                            var selectedEnt = $("#entFilter").val();
 
                                             var filteredData = originalData;
 
@@ -194,6 +215,12 @@
                                             if (selectedRevNo !== "") {
                                                 filteredData = filteredData.filter(function(dt) {
                                                     return dt.rev_no == selectedRevNo;
+                                                });
+                                            }
+
+                                            if (selectedEnt !== "") {
+                                                filteredData = filteredData.filter(function(dt) {
+                                                    return dt.ent == selectedEnt;
                                                 });
                                             }
                                             renderTable(filteredData);

@@ -69,6 +69,23 @@ class App extends CI_Controller
         $this->load->view('page/index_footer_temp');
     }
 
+    function mpp_edit()
+    {
+        $edit_year = $_POST['edit_year'];
+        $edit_ent = $_POST['edit_ent'];
+        $edit_rev_no = $_POST['edit_rev_no'];
+
+        if (!empty($edit_year) && !empty($edit_ent) && !empty($edit_rev_no)) {
+            $data['edit_mmp'] = $this->Mmanp->get_edit_mmp($edit_year, $edit_ent,  $edit_rev_no);
+            $data['current_page'] = 'Edit Manpower';
+
+            $this->load->view('page/index_header_temp', $data);
+            $this->load->view('page/mpp_edit', $data);
+            $this->load->view('page/index_footer_temp', $data);
+        } else {
+            echo 'ERROR 404';
+        }
+    }
 
     function edit_rev()
     {

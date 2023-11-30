@@ -37,7 +37,7 @@
 
 
 
-                                <table id="kt_datatable_dom_positioning" class="table table-striped table-row-bordered gy-5 gs-7 border rounded">
+                                <table id="kt_datatable_dom_positioning" class="table table-paginate table-striped table-row-bordered gy-5 gs-7 border rounded">
                                     <thead>
                                         <tr class="fw-bold fs-6 text-gray-800 px-7" style="text-align: center;">
                                             <th>No</th>
@@ -198,6 +198,12 @@
                                                 row.style.display = nameMatch && statusMatch ? '' : 'none';
                                             });
                                         });
+                                    });
+                                </script>
+                                <script>
+                                    $(document).ready(function() {
+                                        $('#kt_datatable_dom_positioning').DataTable();
+                                        $('.dataTables_length').addClass('bs-select');
                                     });
                                 </script>
                                 <!--end::Card-->

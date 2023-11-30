@@ -4,36 +4,45 @@
 	<base href="" />
 	<title>Revision Schedule</title>
 	<meta charset="utf-8" />
-	<meta name="description" content="ELITE - Trusted Recruitment Partner" />
-	<meta name="keywords" content="ELITE - Trusted Recruitment Partner" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<meta property="og:locale" content="en_US" />
-	<meta property="og:type" content="article" />
-	<meta property="og:title" content="ELITE - Trusted Recruitment Partner" />
-	<meta property="og:url" content="https://keenthemes.com/metronic" />
-	<meta property="og:site_name" content="Keenthemes | Metronic" />
-	<link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
-	<link rel="shortcut icon" href="<?php echo prefix_url; ?>assets/favicon.png" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 	<link href="<?php echo prefix_url; ?>assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" />
 	<link href="<?php echo prefix_url; ?>assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
 	<link href="<?php echo prefix_url; ?>assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 	<link href="<?php echo prefix_url; ?>assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 
-	<?php if ($current_page === 'Add Manpower') { ?>
+	<?php if ($current_page === 'Add Manpower') : ?>
 
 		<script>
 			function applyDisabledStateFromLocalStorage() {
 				if (localStorage.getItem('year_disabled') === 'true' && localStorage.getItem('rev_no_disabled') === 'true') {
 					document.getElementById('year').classList.add('select-disabled');
 					document.getElementById('rev_no').classList.add('select-disabled');
+
+					var added_rev = localStorage.getItem('processing_rev')
+					var tableBody = document.getElementById('tableBody');
+					var rows = tableBody.getElementsByTagName('tr');
+
+					for (var i = 0; i < rows.length; i++) {
+						var rev_id_column = rows[i].getElementsByTagName('td')[0].textContent; // Assuming 'rev_id' is in the first cell
+
+						if (rev_id_column === added_rev) {
+							rows[i].removeAttribute('hidden');
+							rows[i].removeAttribute('disabled');
+						} else {
+							rows[i].setAttribute('hidden', true);
+							rows[i].setAttribute('disabled', true);
+						}
+					}
+
 				} else {
 					document.getElementById('tableBody').setAttribute('hidden', true);
 				}
 			}
 			window.addEventListener('load', applyDisabledStateFromLocalStorage);
 		</script>
-	<?php } ?>
+	<?php endif; ?>
 
 </head>
 

@@ -49,7 +49,7 @@ class Mmanp extends CI_Model
         $this->db->close();
     }
 
-    function get_mmp_rev_sch()
+    function get_mpp_rev_sch()
     {
         $sql = "SELECT * FROM internal.tbm_rev_sch where is_dlt='0'";
         $query = $this->db->query($sql);
@@ -116,6 +116,14 @@ class Mmanp extends CI_Model
     public function get_temp_spec($rev_id)
     {
         $sql = "SELECT * from internal.tbt_rev_sch where temp_rev_id='$rev_id' AND rev_id = '5' ";
+        $query = $this->db->query($sql);
+        return $query->result();
+        $this->db->close();
+    }
+
+    public function get_edit_mpp()
+    {
+        $sql = "SELECT * from internal.tb_m_planning where  rev_no='1' and year='2022' and ent='ptct'";
         $query = $this->db->query($sql);
         return $query->result();
         $this->db->close();

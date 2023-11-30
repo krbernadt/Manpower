@@ -255,7 +255,6 @@
                                                 </select>
                                             </div>
                                             <h5>Filter :</h5>
-                                            <br>
                                             <div class="form-group group-2">
                                                 <div><label for="ent">Select a value :</label></div>
                                                 <div class="form-input input-2" style="flex-grow:2; margin-right:10%;margin-left:0.8%;">
@@ -306,7 +305,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody id="tableBody">
-                                                    <?php foreach ($mmp_plan as $plan_dat) : ?>
+                                                    <?php foreach ($edit_mmp as $plan_dat) : ?>
                                                         <tr class="text-center data-row" style="word-wrap: break-word;">
                                                             <td class="" data-value="<?php echo $plan_dat->rev_id; ?>" hidden><?php echo $plan_dat->rev_id; ?></td>
                                                             <td class="" data-value="<?php echo $plan_dat->gid; ?>"><?php echo $plan_dat->gid; ?></td>
@@ -381,7 +380,6 @@
                                             }
 
                                         }
-
 
                                         // Get references to the input elements
                                         var yearInput = document.getElementById('year');
