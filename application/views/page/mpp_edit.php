@@ -202,7 +202,7 @@
                                             <div class="form-group group-2">
                                                 <?php
                                                 $latest_year = 0;
-                                                foreach ($mmp_add as $data) {
+                                                foreach ($edit_mmp as $data) {
                                                     if ($data->year > $latest_year) {
                                                         $latest_year = $data->year;
                                                     }
@@ -213,7 +213,7 @@
                                                     <datalist id="yearlist">
                                                         <?php
                                                         $unique_years = array();
-                                                        foreach ($mmp_add as $data) {
+                                                        foreach ($edit_mmp as $data) {
                                                             if (!in_array($data->year, $unique_years)) {
                                                                 $unique_years[] = $data->year;
                                                                 echo '<option value="' . $data->year . '">' . $data->year . '</option>';
@@ -227,7 +227,7 @@
                                                 <label for="rev_no">Revision No* :</label>
                                                 <select type="text" name="rev_no" id="rev_no" class="form-input">
                                                     <?php
-                                                    $latest_year_data = array_filter($mmp_add, function ($item) use ($latest_year) {
+                                                    $latest_year_data = array_filter($edit_mmp, function ($item) use ($latest_year) {
                                                         return $item->year == $latest_year;
                                                     });
                                                     $latest_rev_nos = array_map(function ($item) {
@@ -358,10 +358,10 @@
                                         function updateFormValues() {
                                             const selectedYear = yearInput.value;
                                             const selectedRevNo = revNoInput.value;
-                                            const mmp_add = <?php echo json_encode($mmp_add); ?>;
+                                            const edit_mmp = <?php echo json_encode($edit_mmp); ?>;
                                             const processedRevId = localStorage.getItem('processing_rev');
-                                            const revPlan = mmp_add.find(data => data.rev_id == processedRevId);
-                                            const selectedPlan = mmp_add.find(data => data.year == selectedYear && data.rev_no == selectedRevNo);
+                                            const revPlan = edit_mmp.find(data => data.rev_id == processedRevId);
+                                            const selectedPlan = edit_mmp.find(data => data.year == selectedYear && data.rev_no == selectedRevNo);
 
 
                                             if (processedRevId === null) {
@@ -411,7 +411,7 @@
 
                                                 const uniqueRevNos = [];
 
-                                                <?php foreach ($mmp_add as $data) : ?>
+                                                <?php foreach ($edit_mmp as $data) : ?>
                                                     if ("<?php echo $data->year; ?>" === selectedYear && uniqueRevNos.indexOf("<?php echo $data->rev_no; ?>") === -1) {
                                                         uniqueRevNos.push("<?php echo $data->rev_no; ?>");
                                                         const option = document.createElement('option');
@@ -423,7 +423,7 @@
                                             }
 
                                             if (processedRevId !== null) {
-                                                const yearForProcessedRev = <?php echo json_encode($mmp_add); ?>.find(data => data.rev_id == processedRevId).year;
+                                                const yearForProcessedRev = <?php echo json_encode($edit_mmp); ?>.find(data => data.rev_id == processedRevId).year;
                                                 yearInput.value = yearForProcessedRev;
                                                 updateRevNoOptions(yearForProcessedRev);
                                             }
@@ -448,8 +448,8 @@
                                             const revNoInput = document.getElementById('rev_no');
                                             const selectedYear = yearInput.value;
                                             const selectedRevNo = revNoInput.value;
-                                            const mmp_add = <?php echo json_encode($mmp_add); ?>;
-                                            const selectedPlan = mmp_add.find(data => data.year == selectedYear && data.rev_no == selectedRevNo);
+                                            const edit_mmp = <?php echo json_encode($edit_mmp); ?>;
+                                            const selectedPlan = edit_mmp.find(data => data.year == selectedYear && data.rev_no == selectedRevNo);
 
                                             var emp_mpp = {
                                                 rev_id: selectedPlan.rev_id,

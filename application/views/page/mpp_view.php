@@ -107,33 +107,25 @@
                                         window.location.href = '<?php echo prefix_url; ?>app/add_mpp';
                                     }
 
+                                    function appendHiddenInput(form, name, value) {
+                                        var input = document.createElement('input');
+                                        input.type = 'hidden';
+                                        input.name = name;
+                                        input.value = value;
+                                        form.appendChild(input);
+                                    }
+
                                     function edit_mpp(year, ent, rev_no) {
-                                        const url = '<?php echo prefix_url; ?>app/mpp_edit';
+                                        var form = document.createElement('form');
+                                        form.method = 'POST';
+                                        form.action = '<?php echo prefix_url; ?>app/mpp_edit';
 
-                                        const data = {
-                                            edit_year: year,
-                                            edit_ent: ent,
-                                            edit_rev_no: rev_no
-                                        };
+                                        appendHiddenInput(form, 'edit_year', year);
+                                        appendHiddenInput(form, 'edit_ent', ent);
+                                        appendHiddenInput(form, 'edit_rev_no', rev_no);
 
-                                        console.log(data);
-
-                                        fetch(url, {
-                                                method: 'POST',
-                                                headers: {
-                                                    'Content-Type': 'application/json'
-                                                },
-                                                body: JSON.stringify(data)
-                                            })
-                                            .then(response => response.json())
-                                            .then(data => {
-                                                console.log('Success:', data);
-                                                // Add any additional actions you want to perform on success here
-                                            })
-                                            .catch((error) => {
-                                                console.error('Error:', error);
-                                                // Handle errors here
-                                            });
+                                        document.body.appendChild(form);
+                                        form.submit();
                                     }
 
                                     $(document).ready(function() {

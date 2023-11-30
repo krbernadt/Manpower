@@ -71,12 +71,13 @@ class App extends CI_Controller
 
     function mpp_edit()
     {
-        $edit_year = $_POST['edit_year'];
-        $edit_ent = $_POST['edit_ent'];
-        $edit_rev_no = $_POST['edit_rev_no'];
+
+        $edit_year = $this->input->post('edit_year');
+        $edit_ent = $this->input->post('edit_ent');
+        $edit_rev_no = $this->input->post('edit_rev_no');
 
         if (!empty($edit_year) && !empty($edit_ent) && !empty($edit_rev_no)) {
-            $data['edit_mmp'] = $this->Mmanp->get_edit_mmp($edit_year, $edit_ent,  $edit_rev_no);
+            $data['edit_mmp'] = $this->Mmanp->get_edit_mpp($edit_year, $edit_ent,  $edit_rev_no);
             $data['current_page'] = 'Edit Manpower';
 
             $this->load->view('page/index_header_temp', $data);
